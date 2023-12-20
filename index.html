@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: url('3996944.jpg') center/cover no-repeat;
+            overflow: hidden;
+        }
+
+        #calculator {
+            border: 2px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            position: relative;
+        }
+
+        #history-container {
+    position: absolute;
+    top: 0;
+    right: -300px;
+    width: 245px;
+    height: 90%;
+    background-color: #fff;
+    border-left: 2px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: -1; /* Changed from -1 to 1 */
+    transition: right 0.5s ease;
+}
+
+
+
+        input[type="text"] {
+            width: 90%;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 48px;
+            height: 48px;
+            font-size: 18px;
+            margin: 5px;
+            cursor: pointer;
+            background-color: #eee;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button.operator {
+            background-color: #898c8c;
+        }
+
+        button.equals {
+            background-color: #f7a8a8;
+        }
+
+        button.backspace {
+            width: 48px;
+            height: 48px;
+            font-size: 14px;
+            margin: 5px;
+            cursor: pointer;
+            background-color: #898c8c;
+            color: #fff;
+        }
+
+        button.percent {
+            grid-column: span 2;
+            background-color: #898c8c;
+        }
+
+        #history {
+            margin-top: 20px;
+            border-top: 2px solid #ccc;
+            padding-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="calculator">
+        <input type="text" id="display" disabled>
+        <br>
+        <button onclick="clearDisplay()">C</button>
+        <button onclick="appendToDisplay('/')">/</button>
+        <button onclick="appendToDisplay('*')">*</button>
+        <button onclick="appendToDisplay('%')" class="percent">%</button>
+        <br>
+        <button onclick="appendToDisplay('7')">7</button>
+        <button onclick="appendToDisplay('8')">8</button>
+        <button onclick="appendToDisplay('9')">9</button>
+        <button onclick="appendToDisplay('-')" class="operator">-</button>
+        <br>
+        <button onclick="appendToDisplay('4')">4</button>
+        <button onclick="appendToDisplay('5')">5</button>
+        <button onclick="appendToDisplay('6')">6</button>
+        <button onclick="appendToDisplay('+')" class="operator">+</button>
+        <br>
+        <button onclick="appendToDisplay('1')">1</button>
+        <button onclick="appendToDisplay('2')">2</button>
+        <button onclick="appendToDisplay('3')">3</button>
+        <button onclick="calculate()" class="equals">=</button>
+        <br>
+        <button onclick="appendToDisplay('0')">0</button>
+        <button onclick="appendToDisplay('.')">.</button>
+        <button onclick="backspace()" class="backspace">&#9003;</button>
+
+        <button onclick="toggleHistory()" class="backspace">History</button>
+
+        <div id="history-container">
+            <h2>History</h2>
+            <ul id="history-list"></ul>
+        </div>
+    </div>
+
+    <script>
+        function appendToDisplay(value) {
+            document.getElementById('display').value += value;
+        }
+
+        function clearDisplay() {
+            document.getElementById('display').value = '';
+        }
+
+        function calculate() {
+            try {
+                let expression = document.getElementById('display').value;
+                let result = eval(expression);
+                document.getElementById('display').value = result;
+
+                // Add to history
+                addToHistory(expression, result);
+            } catch (error) {
+                document.getElementById('display').value = 'Error';
+            }
+        }
+
+        function backspace() {
+            let currentValue = document.getElementById('display').value;
+            document.getElementById('display').value = currentValue.slice(0, -1);
+        }
+
+        function addToHistory(expression, result) {
+            let historyList = document.getElementById('history-list');
+            let historyItem = document.createElement('li');
+            historyItem.textContent = `${expression} = ${result}`;
+            historyList.appendChild(historyItem);
+        }
+
+        function toggleHistory() {
+            let historyContainer = document.getElementById('history-container');
+            historyContainer.style.right = (historyContainer.style.right === '0px') ? '-300px' : '0px';
+        }
+
+    </script>
+</body>
+</html>
